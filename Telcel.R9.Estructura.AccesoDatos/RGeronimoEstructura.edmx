@@ -1,0 +1,332 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="RGeronimoEstructuraModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Departamento">
+          <Key>
+            <PropertyRef Name="DepartamentoID" />
+          </Key>
+          <Property Name="DepartamentoID" Type="int" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Empleado">
+          <Key>
+            <PropertyRef Name="EmpleadoID" />
+          </Key>
+          <Property Name="EmpleadoID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" />
+          <Property Name="PuestoID" Type="int" />
+          <Property Name="DepartamentoID" Type="int" />
+        </EntityType>
+        <EntityType Name="Puesto">
+          <Key>
+            <PropertyRef Name="PuestoID" />
+          </Key>
+          <Property Name="PuestoID" Type="int" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'RGeronimoEstructura.dbo.VistaEmpleado' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="VistaEmpleado">
+          <Key>
+            <PropertyRef Name="EmpleadoID" />
+          </Key>
+          <Property Name="EmpleadoID" Type="int" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" />
+          <Property Name="PuestoID" Type="int" />
+          <Property Name="DescripcionPuesto" Type="varchar" MaxLength="50" />
+          <Property Name="DepartamentoID" Type="int" />
+          <Property Name="DescripcionDepartamento" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK__Empleado__Depart__15502E78">
+          <End Role="Departamento" Type="Self.Departamento" Multiplicity="0..1" />
+          <End Role="Empleado" Type="Self.Empleado" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Departamento">
+              <PropertyRef Name="DepartamentoID" />
+            </Principal>
+            <Dependent Role="Empleado">
+              <PropertyRef Name="DepartamentoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Empleado__Puesto__145C0A3F">
+          <End Role="Puesto" Type="Self.Puesto" Multiplicity="0..1" />
+          <End Role="Empleado" Type="Self.Empleado" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Puesto">
+              <PropertyRef Name="PuestoID" />
+            </Principal>
+            <Dependent Role="Empleado">
+              <PropertyRef Name="PuestoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="DepartamentoGetAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="EmpleadoAdd" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Nombre" Type="varchar" Mode="In" />
+          <Parameter Name="PuestoID" Type="int" Mode="In" />
+          <Parameter Name="DepartamentoID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="EmpleadoDelete" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EmpleadoID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="EmpleadoGetAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="EmpleadoGetByNombre" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Nombre" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="PuestoGetAll" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <EntityContainer Name="RGeronimoEstructuraModelStoreContainer">
+          <EntitySet Name="Departamento" EntityType="Self.Departamento" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Empleado" EntityType="Self.Empleado" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Puesto" EntityType="Self.Puesto" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VistaEmpleado" EntityType="Self.VistaEmpleado" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [VistaEmpleado].[EmpleadoID] AS [EmpleadoID], 
+    [VistaEmpleado].[Nombre] AS [Nombre], 
+    [VistaEmpleado].[PuestoID] AS [PuestoID], 
+    [VistaEmpleado].[DescripcionPuesto] AS [DescripcionPuesto], 
+    [VistaEmpleado].[DepartamentoID] AS [DepartamentoID], 
+    [VistaEmpleado].[DescripcionDepartamento] AS [DescripcionDepartamento]
+    FROM [dbo].[VistaEmpleado] AS [VistaEmpleado]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK__Empleado__Depart__15502E78" Association="Self.FK__Empleado__Depart__15502E78">
+            <End Role="Departamento" EntitySet="Departamento" />
+            <End Role="Empleado" EntitySet="Empleado" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Empleado__Puesto__145C0A3F" Association="Self.FK__Empleado__Puesto__145C0A3F">
+            <End Role="Puesto" EntitySet="Puesto" />
+            <End Role="Empleado" EntitySet="Empleado" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="RGeronimoEstructuraModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Departamento">
+          <Key>
+            <PropertyRef Name="DepartamentoID" />
+          </Key>
+          <Property Name="DepartamentoID" Type="Int32" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Empleadoes" Relationship="Self.FK__Empleado__Depart__15502E78" FromRole="Departamento" ToRole="Empleado" />
+        </EntityType>
+        <EntityType Name="Empleado">
+          <Key>
+            <PropertyRef Name="EmpleadoID" />
+          </Key>
+          <Property Name="EmpleadoID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PuestoID" Type="Int32" />
+          <Property Name="DepartamentoID" Type="Int32" />
+          <NavigationProperty Name="Departamento" Relationship="Self.FK__Empleado__Depart__15502E78" FromRole="Empleado" ToRole="Departamento" />
+          <NavigationProperty Name="Puesto" Relationship="Self.FK__Empleado__Puesto__145C0A3F" FromRole="Empleado" ToRole="Puesto" />
+        </EntityType>
+        <EntityType Name="Puesto">
+          <Key>
+            <PropertyRef Name="PuestoID" />
+          </Key>
+          <Property Name="PuestoID" Type="Int32" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Empleadoes" Relationship="Self.FK__Empleado__Puesto__145C0A3F" FromRole="Puesto" ToRole="Empleado" />
+        </EntityType>
+        <EntityType Name="VistaEmpleado">
+          <Key>
+            <PropertyRef Name="EmpleadoID" />
+          </Key>
+          <Property Name="EmpleadoID" Type="Int32" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PuestoID" Type="Int32" />
+          <Property Name="DescripcionPuesto" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DepartamentoID" Type="Int32" />
+          <Property Name="DescripcionDepartamento" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK__Empleado__Depart__15502E78">
+          <End Role="Departamento" Type="Self.Departamento" Multiplicity="0..1" />
+          <End Role="Empleado" Type="Self.Empleado" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Departamento">
+              <PropertyRef Name="DepartamentoID" />
+            </Principal>
+            <Dependent Role="Empleado">
+              <PropertyRef Name="DepartamentoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Empleado__Puesto__145C0A3F">
+          <End Role="Puesto" Type="Self.Puesto" Multiplicity="0..1" />
+          <End Role="Empleado" Type="Self.Empleado" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Puesto">
+              <PropertyRef Name="PuestoID" />
+            </Principal>
+            <Dependent Role="Empleado">
+              <PropertyRef Name="PuestoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="RGeronimoEstructuraEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Departamentoes" EntityType="Self.Departamento" />
+          <EntitySet Name="Empleadoes" EntityType="Self.Empleado" />
+          <EntitySet Name="Puestoes" EntityType="Self.Puesto" />
+          <EntitySet Name="VistaEmpleadoes" EntityType="Self.VistaEmpleado" />
+          <AssociationSet Name="FK__Empleado__Depart__15502E78" Association="Self.FK__Empleado__Depart__15502E78">
+            <End Role="Departamento" EntitySet="Departamentoes" />
+            <End Role="Empleado" EntitySet="Empleadoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Empleado__Puesto__145C0A3F" Association="Self.FK__Empleado__Puesto__145C0A3F">
+            <End Role="Puesto" EntitySet="Puestoes" />
+            <End Role="Empleado" EntitySet="Empleadoes" />
+          </AssociationSet>
+          <FunctionImport Name="DepartamentoGetAll" ReturnType="Collection(RGeronimoEstructuraModel.DepartamentoGetAll_Result)" />
+          <FunctionImport Name="EmpleadoAdd">
+            <Parameter Name="Nombre" Mode="In" Type="String" />
+            <Parameter Name="PuestoID" Mode="In" Type="Int32" />
+            <Parameter Name="DepartamentoID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="EmpleadoDelete">
+          <Parameter Name="EmpleadoID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="PuestoGetAll" ReturnType="Collection(RGeronimoEstructuraModel.PuestoGetAll_Result)" />
+          <FunctionImport Name="EmpleadoGetAll" ReturnType="Collection(RGeronimoEstructuraModel.EmpleadoGetAll_Result)" />
+          <FunctionImport Name="EmpleadoGetByNombre" ReturnType="Collection(RGeronimoEstructuraModel.EmpleadoGetByNombre_Result)">
+            <Parameter Name="Nombre" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="DepartamentoGetAll_Result">
+          <Property Type="Int32" Name="DepartamentoID" Nullable="false" />
+          <Property Type="String" Name="Descripcion" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="PuestoGetAll_Result">
+          <Property Type="Int32" Name="PuestoID" Nullable="false" />
+          <Property Type="String" Name="Descripcion" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="EmpleadoGetAll_Result">
+          <Property Type="Int32" Name="EmpleadoID" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="PuestoID" Nullable="true" />
+          <Property Type="String" Name="DescripcionPuesto" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="DepartamentoID" Nullable="true" />
+          <Property Type="String" Name="DescripcionDepartamento" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="EmpleadoGetByNombre_Result">
+          <Property Type="Int32" Name="EmpleadoID" Nullable="false" />
+          <Property Type="String" Name="Nombre" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="PuestoID" Nullable="true" />
+          <Property Type="String" Name="DescripcionPuesto" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="DepartamentoID" Nullable="true" />
+          <Property Type="String" Name="DescripcionDepartamento" Nullable="true" MaxLength="50" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="RGeronimoEstructuraModelStoreContainer" CdmEntityContainer="RGeronimoEstructuraEntities">
+          <EntitySetMapping Name="Departamentoes">
+            <EntityTypeMapping TypeName="RGeronimoEstructuraModel.Departamento">
+              <MappingFragment StoreEntitySet="Departamento">
+                <ScalarProperty Name="DepartamentoID" ColumnName="DepartamentoID" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Empleadoes">
+            <EntityTypeMapping TypeName="RGeronimoEstructuraModel.Empleado">
+              <MappingFragment StoreEntitySet="Empleado">
+                <ScalarProperty Name="EmpleadoID" ColumnName="EmpleadoID" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="PuestoID" ColumnName="PuestoID" />
+                <ScalarProperty Name="DepartamentoID" ColumnName="DepartamentoID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Puestoes">
+            <EntityTypeMapping TypeName="RGeronimoEstructuraModel.Puesto">
+              <MappingFragment StoreEntitySet="Puesto">
+                <ScalarProperty Name="PuestoID" ColumnName="PuestoID" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VistaEmpleadoes">
+            <EntityTypeMapping TypeName="RGeronimoEstructuraModel.VistaEmpleado">
+              <MappingFragment StoreEntitySet="VistaEmpleado">
+                <ScalarProperty Name="EmpleadoID" ColumnName="EmpleadoID" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="PuestoID" ColumnName="PuestoID" />
+                <ScalarProperty Name="DescripcionPuesto" ColumnName="DescripcionPuesto" />
+                <ScalarProperty Name="DepartamentoID" ColumnName="DepartamentoID" />
+                <ScalarProperty Name="DescripcionDepartamento" ColumnName="DescripcionDepartamento" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="DepartamentoGetAll" FunctionName="RGeronimoEstructuraModel.Store.DepartamentoGetAll">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="RGeronimoEstructuraModel.DepartamentoGetAll_Result">
+                <ScalarProperty Name="DepartamentoID" ColumnName="DepartamentoID" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="EmpleadoAdd" FunctionName="RGeronimoEstructuraModel.Store.EmpleadoAdd" />
+          <FunctionImportMapping FunctionImportName="EmpleadoDelete" FunctionName="RGeronimoEstructuraModel.Store.EmpleadoDelete" />
+          <FunctionImportMapping FunctionImportName="PuestoGetAll" FunctionName="RGeronimoEstructuraModel.Store.PuestoGetAll">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="RGeronimoEstructuraModel.PuestoGetAll_Result">
+                <ScalarProperty Name="PuestoID" ColumnName="PuestoID" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="EmpleadoGetAll" FunctionName="RGeronimoEstructuraModel.Store.EmpleadoGetAll">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="RGeronimoEstructuraModel.EmpleadoGetAll_Result">
+                <ScalarProperty Name="EmpleadoID" ColumnName="EmpleadoID" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="PuestoID" ColumnName="PuestoID" />
+                <ScalarProperty Name="DescripcionPuesto" ColumnName="DescripcionPuesto" />
+                <ScalarProperty Name="DepartamentoID" ColumnName="DepartamentoID" />
+                <ScalarProperty Name="DescripcionDepartamento" ColumnName="DescripcionDepartamento" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="EmpleadoGetByNombre" FunctionName="RGeronimoEstructuraModel.Store.EmpleadoGetByNombre">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="RGeronimoEstructuraModel.EmpleadoGetByNombre_Result">
+                <ScalarProperty Name="EmpleadoID" ColumnName="EmpleadoID" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="PuestoID" ColumnName="PuestoID" />
+                <ScalarProperty Name="DescripcionPuesto" ColumnName="DescripcionPuesto" />
+                <ScalarProperty Name="DepartamentoID" ColumnName="DepartamentoID" />
+                <ScalarProperty Name="DescripcionDepartamento" ColumnName="DescripcionDepartamento" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

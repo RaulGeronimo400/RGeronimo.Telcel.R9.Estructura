@@ -1,0 +1,16 @@
+Nombre,DepartamentoID,PuestoID
+Alfredo Pérez Torres,1,1
+Fernando Gonzalez Jiménez,1,2
+Luis Martinez Pérez,1,3
+José Robles Torres,2,2
+Karla Garcia Higareda,2,3
+Lorena Duran Castro,2,4
+Jessica Ramírez Estrada,3,3
+Jimena Zarate Vélez,3,4
+Daniel Garcia Buendía,3,5
+Rubén Núñez López,4,1
+Jorge Franco Quiroz,4,3
+Gloria Velazquez Pérez,4,5
+Wendy Salgado Olguín,5,2
+Arturo Frías Robles,5,4
+Francisco Torres Duran,5,1
